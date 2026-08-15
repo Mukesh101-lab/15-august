@@ -1,5 +1,9 @@
+// ==========================================
+// 🌐 PRODUCTION API
+// ==========================================
+
 const API_URL =
-    "http://localhost:5000/api/auth/login";
+    "https://one5-august.onrender.com/api/auth/login";
 
 
 const loginForm =
@@ -33,126 +37,156 @@ const loginStatus =
 
 
 // ==========================================
-// LOGIN
+// 🔐 LOGIN
 // ==========================================
 
-loginForm.addEventListener(
-    "submit",
-    async (event) => {
+if (loginForm) {
 
-        event.preventDefault();
+    loginForm.addEventListener(
+        "submit",
+        async (event) => {
 
-
-        const username =
-            usernameInput.value.trim();
+            event.preventDefault();
 
 
-        const password =
-            passwordInput.value;
+            const username =
+                usernameInput.value.trim();
 
 
-        if (!username || !password) {
-
-            loginStatus.textContent =
-                "⚠️ Enter username and password.";
-
-            return;
-
-        }
+            const password =
+                passwordInput.value;
 
 
-        try {
+            // ==================================
+            // VALIDATION
+            // ==================================
 
-            loginBtn.disabled = true;
-
-            loginBtn.textContent =
-                "⏳ Logging in...";
-
-
-            loginStatus.textContent =
-                "";
-
-
-            const response =
-                await fetch(
-                    API_URL,
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body:
-                            JSON.stringify({
-                                username,
-                                password
-                            })
-
-                    }
-                );
-
-
-            const result =
-                await response.json();
-
-
-            if (!result.success) {
+            if (!username || !password) {
 
                 loginStatus.textContent =
-                    "❌ " +
-                    result.message;
+                    "⚠️ Enter username and password.";
 
                 return;
 
             }
 
 
-            // Save JWT token
+            try {
 
-            localStorage.setItem(
-                "adminToken",
-                result.token
-            );
+                loginBtn.disabled = true;
 
-
-            loginStatus.textContent =
-                "✅ Login successful!";
+                loginBtn.textContent =
+                    "⏳ Logging in...";
 
 
-            // Open dashboard
-
-            setTimeout(
-                () => {
-
-                    window.location.href =
-                        "admin.html";
-
-                },
-                500
-            );
+                loginStatus.textContent =
+                    "";
 
 
-        } catch (error) {
+                // ==================================
+                // LOGIN API
+                // ==================================
 
-            console.error(error);
+                const response =
+                    await fetch(
+                        API_URL,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    username,
+                                    password
+                                })
+                        }
+                    );
 
 
-            loginStatus.textContent =
-                "❌ Backend server se connection nahi ho raha.";
+                const result =
+                    await response.json();
 
-        } finally {
 
-            loginBtn.disabled = false;
+                // ==================================
+                // LOGIN FAILED
+                // ==================================
 
-            loginBtn.textContent =
-                "🔐 Login";
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
+
+                    loginStatus.textContent =
+                        "❌ " +
+                        (
+                            result.message ||
+                            "Invalid username or password."
+                        );
+
+                    return;
+
+                }
+
+
+                // ==================================
+                // SAVE JWT TOKEN
+                // ==================================
+
+                localStorage.setItem(
+                    "adminToken",
+                    result.token
+                );
+
+
+                loginStatus.textContent =
+                    "✅ Login successful!";
+
+
+                // ==================================
+                // REDIRECT ADMIN DASHBOARD
+                // ==================================
+
+                setTimeout(
+                    () => {
+
+                        window.location.href =
+                            "admin.html";
+
+                    },
+                    500
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Login Error:",
+                    error
+                );
+
+
+                loginStatus.textContent =
+                    "❌ Backend server se connection nahi ho raha.";
+
+            }
+
+
+            finally {
+
+                loginBtn.disabled = false;
+
+                loginBtn.textContent =
+                    "🔐 Login";
+
+            }
 
         }
+    );
 
-    }
-);
+}
