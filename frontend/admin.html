@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        🇮🇳 Independence Day Admin
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="admin-container">
+
+        <!-- HEADER -->
+
+        <header class="admin-header">
+
+            <div>
+
+                <span class="admin-date">
+                    15 AUGUST
+                </span>
+
+                <h1>
+                    🇮🇳 Admin Dashboard
+                </h1>
+
+                <p>
+                    Independence Day Statistics
+                </p>
+
+            </div>
+
+            <a
+                href="index.html"
+                class="home-btn"
+            >
+                ← Website
+            </a>
+
+        </header>
+
+
+        <!-- STATS -->
+
+        <section class="stats-grid">
+
+            <div class="admin-card">
+
+                <div class="card-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Visitors
+                    </span>
+
+                    <strong id="visitorCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-card">
+
+                <div class="card-icon">
+                    🎆
+                </div>
+
+                <div>
+
+                    <span>
+                        Fireworks
+                    </span>
+
+                    <strong id="fireworkCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-card">
+
+                <div class="card-icon">
+                    ❤️
+                </div>
+
+                <div>
+
+                    <span>
+                        Messages
+                    </span>
+
+                    <strong id="messageCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MESSAGES -->
+
+        <section class="messages-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        🇮🇳 Messages from India
+                    </h2>
+
+                    <p>
+                        Manage visitor messages
+                    </p>
+
+                </div>
+
+                <button
+                    id="refreshBtn"
+                >
+                    🔄 Refresh
+                </button>
+
+            </div>
+
+
+            <div id="adminMessages">
+
+                Loading messages...
+
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            &lt;/&gt; Made with Code ❤️ for India
+
+        </footer>
+
+    </main>
+
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,830 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ================= BODY ================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    /* IMPORTANT: PAGE SCROLL */
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #16213e 0%,
+            #070b18 45%,
+            #02040a 100%
+        );
+
+    color: white;
+}
+
+
+/* ================= CANVAS ================= */
+
+#fireworks {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+
+/* ================= CONTAINER ================= */
+
+.container {
+    position: relative;
+
+    z-index: 5;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+    text-align: center;
+
+    padding: 50px 30px 80px;
+
+    width: 100%;
+}
+
+
+/* ================= DATE ================= */
+
+.date {
+    font-size: 18px;
+
+    font-weight: bold;
+
+    letter-spacing: 8px;
+
+    margin-bottom: 10px;
+
+    animation:
+        fadeDown 1s ease forwards;
+}
+
+
+/* ================= TITLE ================= */
+
+h1 {
+    font-size:
+        clamp(32px, 5vw, 65px);
+
+    font-weight: 800;
+
+    margin-bottom: 10px;
+
+    animation:
+        titleGlow 2s infinite alternate;
+}
+
+h1 span {
+    display: inline-block;
+
+    animation:
+        wave 1.5s infinite;
+}
+
+
+/* ================= SUBTITLE ================= */
+
+.subtitle {
+    font-size: 16px;
+
+    opacity: 0.8;
+
+    margin-bottom: 25px;
+}
+
+
+/* ================= FLAG ================= */
+
+.flag-wrapper {
+    position: relative;
+
+    width: 420px;
+
+    max-width: 85vw;
+
+    margin: 15px 0 30px;
+
+    display: flex;
+
+    justify-content: center;
+}
+
+.flag {
+    width: 360px;
+
+    max-width: 80vw;
+
+    aspect-ratio: 3 / 2;
+
+    position: relative;
+
+    overflow: hidden;
+
+    transform-origin: left center;
+
+    animation:
+        flagWave 2.5s ease-in-out infinite;
+
+    border-radius: 2px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ================= STRIPES ================= */
+
+.stripe {
+    width: 100%;
+
+    height: 33.333%;
+
+    position: relative;
+}
+
+.saffron {
+    background: #ff9933;
+}
+
+.white {
+    background: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.green {
+    background: #138808;
+}
+
+
+/* ================= CHAKRA ================= */
+
+.chakra {
+    width: 78px;
+
+    height: 78px;
+
+    border:
+        4px solid #000080;
+
+    border-radius: 50%;
+
+    position: relative;
+
+    animation:
+        rotateChakra 5s linear infinite;
+}
+
+.chakra-center {
+    width: 10px;
+
+    height: 10px;
+
+    background: #000080;
+
+    border-radius: 50%;
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+}
+
+
+/* ================= SPOKES ================= */
+
+.spoke {
+    position: absolute;
+
+    width: 2px;
+
+    height: 70px;
+
+    background: #000080;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform-origin: center;
+}
+
+.s1  { transform: translate(-50%, -50%) rotate(0deg); }
+.s2  { transform: translate(-50%, -50%) rotate(15deg); }
+.s3  { transform: translate(-50%, -50%) rotate(30deg); }
+.s4  { transform: translate(-50%, -50%) rotate(45deg); }
+.s5  { transform: translate(-50%, -50%) rotate(60deg); }
+.s6  { transform: translate(-50%, -50%) rotate(75deg); }
+.s7  { transform: translate(-50%, -50%) rotate(90deg); }
+.s8  { transform: translate(-50%, -50%) rotate(105deg); }
+.s9  { transform: translate(-50%, -50%) rotate(120deg); }
+.s10 { transform: translate(-50%, -50%) rotate(135deg); }
+.s11 { transform: translate(-50%, -50%) rotate(150deg); }
+.s12 { transform: translate(-50%, -50%) rotate(165deg); }
+.s13 { transform: translate(-50%, -50%) rotate(180deg); }
+.s14 { transform: translate(-50%, -50%) rotate(195deg); }
+.s15 { transform: translate(-50%, -50%) rotate(210deg); }
+.s16 { transform: translate(-50%, -50%) rotate(225deg); }
+.s17 { transform: translate(-50%, -50%) rotate(240deg); }
+.s18 { transform: translate(-50%, -50%) rotate(255deg); }
+.s19 { transform: translate(-50%, -50%) rotate(270deg); }
+.s20 { transform: translate(-50%, -50%) rotate(285deg); }
+.s21 { transform: translate(-50%, -50%) rotate(300deg); }
+.s22 { transform: translate(-50%, -50%) rotate(315deg); }
+.s23 { transform: translate(-50%, -50%) rotate(330deg); }
+.s24 { transform: translate(-50%, -50%) rotate(345deg); }
+
+
+/* ================= POLE ================= */
+
+.flag-pole {
+    position: absolute;
+
+    width: 8px;
+
+    height: 410px;
+
+    background:
+        linear-gradient(
+            to right,
+            #777,
+            #eee,
+            #777
+        );
+
+    left: 10px;
+
+    top: -20px;
+
+    z-index: -1;
+
+    border-radius: 10px;
+}
+
+.flag-base {
+    position: absolute;
+
+    width: 80px;
+
+    height: 12px;
+
+    background: #aaa;
+
+    bottom: -20px;
+
+    left: -26px;
+
+    border-radius: 20px;
+}
+
+
+/* ================= JAI HIND ================= */
+
+.message {
+    font-size: 34px;
+
+    font-weight: 800;
+
+    margin-bottom: 10px;
+
+    animation:
+        pulse 1.5s infinite;
+}
+
+.message span {
+    font-size: 26px;
+}
+
+
+/* ================= QUOTE ================= */
+
+.quote {
+    font-size: 14px;
+
+    opacity: 0.7;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+}
+
+
+/* ================= BUTTON ================= */
+
+button {
+    border: none;
+
+    outline: none;
+
+    padding: 13px 25px;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff9933,
+            white,
+            #138808
+        );
+
+    color: #111;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    box-shadow:
+        0 0 20px
+        rgba(255, 255, 255, 0.25);
+}
+
+button:hover {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 35px
+        rgba(255, 255, 255, 0.5);
+}
+
+
+/* ================= LIVE STATS ================= */
+
+.stats {
+    width: 100%;
+
+    max-width: 700px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin: 30px 0;
+}
+
+.stat-card {
+    padding: 20px 10px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+    border-radius: 16px;
+
+    backdrop-filter: blur(10px);
+
+    text-align: center;
+
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+
+    background:
+        rgba(255, 255, 255, 0.13);
+}
+
+.stat-icon {
+    display: block;
+
+    font-size: 28px;
+
+    margin-bottom: 8px;
+}
+
+.stat-card strong {
+    display: block;
+
+    font-size: 28px;
+
+    font-weight: 800;
+}
+
+.stat-card p {
+    margin-top: 5px;
+
+    font-size: 13px;
+
+    opacity: 0.65;
+}
+
+
+/* ================= MESSAGE SECTION ================= */
+
+.message-section {
+    width: 100%;
+
+    max-width: 600px;
+
+    margin-top: 10px;
+
+    padding: 30px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(10px);
+
+    text-align: center;
+}
+
+.message-section h2 {
+    font-size: 28px;
+
+    margin-bottom: 8px;
+}
+
+.message-section > p {
+    opacity: 0.7;
+
+    margin-bottom: 20px;
+}
+
+
+/* ================= FORM ================= */
+
+#messageForm {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+#messageForm input,
+#messageForm textarea {
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border: none;
+
+    outline: none;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    color: white;
+
+    font-size: 15px;
+}
+
+#messageForm input::placeholder,
+#messageForm textarea::placeholder {
+    color:
+        rgba(255, 255, 255, 0.6);
+}
+
+#messageForm textarea {
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+#messageForm button {
+    margin-top: 5px;
+}
+
+
+/* ================= FORM STATUS ================= */
+
+#formStatus {
+    min-height: 20px;
+
+    margin-top: 12px;
+
+    font-size: 14px;
+}
+
+
+/* ================= MESSAGES ================= */
+
+.messages-container {
+    margin-top: 30px;
+
+    text-align: left;
+}
+
+.messages-container h3 {
+    text-align: center;
+
+    margin-bottom: 18px;
+}
+
+.message-card {
+    padding: 15px;
+
+    margin-bottom: 12px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border-left:
+        4px solid #ff9933;
+}
+
+.message-card:nth-child(even) {
+    border-left-color: #138808;
+}
+
+.message-name {
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+.message-text {
+    opacity: 0.85;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+}
+
+.message-time {
+    font-size: 11px;
+
+    opacity: 0.5;
+
+    margin-top: 8px;
+}
+
+
+/* ================= CODE TEXT ================= */
+
+.code-text {
+    margin-top: 30px;
+
+    font-family: monospace;
+
+    font-size: 13px;
+
+    opacity: 0.6;
+}
+
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes flagWave {
+
+    0%,
+    100% {
+        transform:
+            perspective(500px)
+            rotateY(0deg)
+            skewY(0deg);
+    }
+
+    50% {
+        transform:
+            perspective(500px)
+            rotateY(-8deg)
+            skewY(2deg);
+    }
+}
+
+
+@keyframes rotateChakra {
+
+    from {
+        transform:
+            rotate(0deg);
+    }
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+@keyframes titleGlow {
+
+    from {
+        text-shadow:
+            0 0 10px
+            rgba(255, 153, 51, 0.4);
+    }
+
+    to {
+        text-shadow:
+            0 0 25px
+            rgba(19, 136, 8, 0.7);
+    }
+}
+
+
+@keyframes wave {
+
+    0%,
+    100% {
+        transform:
+            rotate(-10deg);
+    }
+
+    50% {
+        transform:
+            rotate(10deg);
+    }
+}
+
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform:
+            scale(1);
+    }
+
+    50% {
+        transform:
+            scale(1.05);
+    }
+}
+
+
+@keyframes fadeDown {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+
+    body {
+        overflow-x: hidden;
+
+        overflow-y: auto;
+    }
+
+    .container {
+        padding:
+            35px
+            15px
+            60px;
+    }
+
+    .date {
+        font-size: 14px;
+
+        letter-spacing: 5px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .flag-wrapper {
+        width: 100%;
+
+        margin:
+            15px
+            0
+            30px;
+    }
+
+    .flag {
+        width: 300px;
+    }
+
+    .chakra {
+        width: 65px;
+
+        height: 65px;
+    }
+
+    .spoke {
+        height: 58px;
+    }
+
+    .message {
+        font-size: 28px;
+    }
+
+    .message span {
+        font-size: 22px;
+    }
+
+    .flag-pole {
+        height: 350px;
+    }
+
+    .stats {
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 8px;
+
+        margin:
+            25px 0;
+    }
+
+    .stat-card {
+        padding:
+            15px
+            5px;
+    }
+
+    .stat-icon {
+        font-size: 22px;
+    }
+
+    .stat-card strong {
+        font-size: 20px;
+    }
+
+    .stat-card p {
+        font-size: 11px;
+    }
+
+    .message-section {
+        padding: 20px;
+
+        margin-top: 10px;
+    }
+
+    .message-section h2 {
+        font-size: 23px;
+    }
+
+    .code-text {
+        margin-top: 25px;
+    }
+}
