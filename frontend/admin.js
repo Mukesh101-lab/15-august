@@ -1,15 +1,17 @@
 // ==========================================
+// 🇮🇳 15 AUGUST - ADMIN DASHBOARD
+// ==========================================
+
+
+// ==========================================
 // ADMIN AUTHENTICATION
 // ==========================================
 
-const token =
-    localStorage.getItem("adminToken");
+const token = localStorage.getItem("adminToken");
 
-// Login नहीं है तो login page पर भेजो
+// Login nahi hai to login page par bhejo
 if (!token) {
-
-    window.location.href =
-        "admin-login.html";
+    window.location.href = "admin-login.html";
 
     throw new Error(
         "Admin authentication required"
@@ -18,14 +20,17 @@ if (!token) {
 
 
 // ==========================================
-// API URLS
+// 🌐 PRODUCTION API URL
 // ==========================================
 
+const API_BASE_URL =
+    "https://one5-august.onrender.com";
+
 const API_URL =
-    "http://localhost:5000/api/messages";
+    `${API_BASE_URL}/api/messages`;
 
 const STATS_URL =
-    "http://localhost:5000/api/stats";
+    `${API_BASE_URL}/api/stats`;
 
 
 // ==========================================
@@ -33,38 +38,26 @@ const STATS_URL =
 // ==========================================
 
 const visitorCount =
-    document.getElementById(
-        "visitorCount"
-    );
+    document.getElementById("visitorCount");
 
 const fireworkCount =
-    document.getElementById(
-        "fireworkCount"
-    );
+    document.getElementById("fireworkCount");
 
 const messageCount =
-    document.getElementById(
-        "messageCount"
-    );
+    document.getElementById("messageCount");
 
 const adminMessages =
-    document.getElementById(
-        "adminMessages"
-    );
+    document.getElementById("adminMessages");
 
 const refreshBtn =
-    document.getElementById(
-        "refreshBtn"
-    );
+    document.getElementById("refreshBtn");
 
 const logoutBtn =
-    document.getElementById(
-        "logoutBtn"
-    );
+    document.getElementById("logoutBtn");
 
 
 // ==========================================
-// LOGOUT
+// 🚪 LOGOUT
 // ==========================================
 
 if (logoutBtn) {
@@ -73,12 +66,7 @@ if (logoutBtn) {
         "click",
         () => {
 
-            localStorage.removeItem(
-                "adminToken"
-            );
-
-            window.location.href =
-                "admin-login.html";
+            logout();
 
         }
     );
@@ -87,7 +75,7 @@ if (logoutBtn) {
 
 
 // ==========================================
-// LOAD STATS
+// 📊 LOAD STATS
 // ==========================================
 
 async function loadStats() {
@@ -98,6 +86,8 @@ async function loadStats() {
             await fetch(
                 STATS_URL,
                 {
+                    method: "GET",
+
                     headers: {
                         "Authorization":
                             `Bearer ${token}`
@@ -106,8 +96,11 @@ async function loadStats() {
             );
 
 
-        // Token expired
-        if (response.status === 401) {
+        // Token expired / unauthorized
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
 
             logout();
 
@@ -119,7 +112,10 @@ async function loadStats() {
             await response.json();
 
 
-        if (!result.success) {
+        if (
+            !response.ok ||
+            !result.success
+        ) {
 
             console.error(
                 "Unable to load stats:",
@@ -130,33 +126,39 @@ async function loadStats() {
         }
 
 
-        // Update stats
+        const data =
+            result.data || {};
 
+
+        // Visitors
         if (visitorCount) {
 
             visitorCount.textContent =
-                result.data.visitors ?? 0;
+                data.visitors ?? 0;
 
         }
 
 
+        // Fireworks
         if (fireworkCount) {
 
             fireworkCount.textContent =
-                result.data.fireworks ?? 0;
+                data.fireworks ?? 0;
 
         }
 
 
+        // Messages
         if (messageCount) {
 
             messageCount.textContent =
-                result.data.messages ?? 0;
+                data.messages ?? 0;
 
         }
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
             "Stats error:",
@@ -169,10 +171,15 @@ async function loadStats() {
 
 
 // ==========================================
-// LOAD MESSAGES
+// 💬 LOAD MESSAGES
 // ==========================================
 
 async function loadMessages() {
+
+    if (!adminMessages) {
+        return;
+    }
+
 
     try {
 
@@ -182,7 +189,10 @@ async function loadMessages() {
 
         const response =
             await fetch(
-                API_URL
+                API_URL,
+                {
+                    method: "GET"
+                }
             );
 
 
@@ -190,7 +200,10 @@ async function loadMessages() {
             await response.json();
 
 
-        if (!result.success) {
+        if (
+            !response.ok ||
+            !result.success
+        ) {
 
             adminMessages.innerHTML =
                 "❌ Unable to load messages.";
@@ -199,37 +212,45 @@ async function loadMessages() {
         }
 
 
-        // No messages
+        // ==================================
+        // NO MESSAGES
+        // ==================================
 
         if (
             !result.data ||
             result.data.length === 0
         ) {
 
-            adminMessages.innerHTML =
-                `
+            adminMessages.innerHTML = `
                 <div class="empty-message">
                     🇮🇳 No messages yet.
                     <br>
                     Be the first to send one!
                 </div>
-                `;
+            `;
+
 
             if (messageCount) {
+
                 messageCount.textContent = 0;
+
             }
+
 
             return;
         }
 
 
-        // Clear container
+        // ==================================
+        // CLEAR CONTAINER
+        // ==================================
 
-        adminMessages.innerHTML =
-            "";
+        adminMessages.innerHTML = "";
 
 
-        // Update message count
+        // ==================================
+        // MESSAGE COUNT
+        // ==================================
 
         if (messageCount) {
 
@@ -239,15 +260,15 @@ async function loadMessages() {
         }
 
 
-        // Create cards
+        // ==================================
+        // CREATE MESSAGE CARDS
+        // ==================================
 
         result.data.forEach(
             (item) => {
 
                 const card =
-                    document.createElement(
-                        "div"
-                    );
+                    document.createElement("div");
 
 
                 card.className =
@@ -278,7 +299,7 @@ async function loadMessages() {
 
                         <div class="message-date">
 
-                            ${date}
+                            ${escapeHTML(date)}
 
                         </div>
 
@@ -296,7 +317,7 @@ async function loadMessages() {
 
                     <button
                         class="delete-btn"
-                        data-id="${item._id}"
+                        data-id="${escapeHTML(item._id)}"
                     >
 
                         🗑️ Delete
@@ -306,9 +327,7 @@ async function loadMessages() {
                 `;
 
 
-                adminMessages.appendChild(
-                    card
-                );
+                adminMessages.appendChild(card);
 
             }
         );
@@ -319,9 +338,7 @@ async function loadMessages() {
         // ==================================
 
         document
-            .querySelectorAll(
-                ".delete-btn"
-            )
+            .querySelectorAll(".delete-btn")
             .forEach(
                 (button) => {
 
@@ -339,8 +356,9 @@ async function loadMessages() {
                 }
             );
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
             "Messages error:",
@@ -348,12 +366,11 @@ async function loadMessages() {
         );
 
 
-        adminMessages.innerHTML =
-            `
+        adminMessages.innerHTML = `
             <div class="error-message">
-                ❌ Backend server is not running.
+                ❌ Backend server se connection nahi ho raha.
             </div>
-            `;
+        `;
 
     }
 
@@ -361,7 +378,7 @@ async function loadMessages() {
 
 
 // ==========================================
-// DELETE MESSAGE
+// 🗑️ DELETE MESSAGE
 // ==========================================
 
 async function deleteMessage(id) {
@@ -385,16 +402,15 @@ async function deleteMessage(id) {
             await fetch(
                 `${API_URL}/${id}`,
                 {
-
                     method: "DELETE",
 
                     headers: {
-
                         "Authorization":
-                            `Bearer ${token}`
+                            `Bearer ${token}`,
 
+                        "Content-Type":
+                            "application/json"
                     }
-
                 }
             );
 
@@ -423,7 +439,10 @@ async function deleteMessage(id) {
         // DELETE FAILED
         // ==================================
 
-        if (!result.success) {
+        if (
+            !response.ok ||
+            !result.success
+        ) {
 
             alert(
                 "❌ " +
@@ -451,8 +470,9 @@ async function deleteMessage(id) {
 
         await loadStats();
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
             "Delete error:",
@@ -470,7 +490,7 @@ async function deleteMessage(id) {
 
 
 // ==========================================
-// LOGOUT FUNCTION
+// 🚪 LOGOUT FUNCTION
 // ==========================================
 
 function logout() {
@@ -479,6 +499,7 @@ function logout() {
         "adminToken"
     );
 
+
     window.location.href =
         "admin-login.html";
 
@@ -486,19 +507,17 @@ function logout() {
 
 
 // ==========================================
-// SECURITY
+// 🛡️ SECURITY
 // ==========================================
 
 function escapeHTML(text) {
 
     const div =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     div.textContent =
-        text ?? "";
+        String(text ?? "");
 
 
     return div.innerHTML;
@@ -507,7 +526,7 @@ function escapeHTML(text) {
 
 
 // ==========================================
-// REFRESH BUTTON
+// 🔄 REFRESH BUTTON
 // ==========================================
 
 if (refreshBtn) {
@@ -516,8 +535,10 @@ if (refreshBtn) {
         "click",
         async () => {
 
-            refreshBtn.disabled =
-                true;
+            refreshBtn.disabled = true;
+
+            const oldText =
+                refreshBtn.textContent;
 
             refreshBtn.textContent =
                 "⏳ Loading...";
@@ -528,11 +549,10 @@ if (refreshBtn) {
             await loadMessages();
 
 
-            refreshBtn.disabled =
-                false;
+            refreshBtn.disabled = false;
 
             refreshBtn.textContent =
-                "🔄 Refresh";
+                oldText || "🔄 Refresh";
 
         }
     );
@@ -541,9 +561,24 @@ if (refreshBtn) {
 
 
 // ==========================================
-// INITIAL LOAD
+// 🚀 INITIAL LOAD
 // ==========================================
 
 loadStats();
 
 loadMessages();
+
+
+// ==========================================
+// 🔄 AUTO REFRESH
+// ==========================================
+
+setInterval(
+    () => {
+
+        loadStats();
+        loadMessages();
+
+    },
+    10000
+);

@@ -8,7 +8,8 @@
 // API CONFIG
 // ==================================================
 
-const API_BASE_URL = "http://localhost:5000";
+// 🚀 DEPLOYED BACKEND URL
+const API_BASE_URL = "https://one5-august.onrender.com";
 
 const MESSAGE_API =
     `${API_BASE_URL}/api/messages`;
@@ -424,11 +425,8 @@ if (fireworkBtn) {
         "click",
         async () => {
 
-            // Database count +1
             await registerFirework();
 
-
-            // Visual fireworks
             for (
                 let i = 0;
                 i < 5;
@@ -544,7 +542,6 @@ async function loadMessages() {
 
         messagesList.innerHTML = "";
 
-
         result.data.forEach(
             (item) => {
 
@@ -604,13 +601,11 @@ if (messageForm) {
 
             event.preventDefault();
 
-
             const name =
                 nameInput.value.trim();
 
             const message =
                 messageInput.value.trim();
-
 
             if (!name || !message) {
 
@@ -620,7 +615,6 @@ if (messageForm) {
                 return;
             }
 
-
             if (name.length > 30) {
 
                 formStatus.textContent =
@@ -628,7 +622,6 @@ if (messageForm) {
 
                 return;
             }
-
 
             if (message.length > 200) {
 
@@ -638,12 +631,10 @@ if (messageForm) {
                 return;
             }
 
-
             try {
 
                 formStatus.textContent =
                     "⏳ Sending message...";
-
 
                 const response =
                     await fetch(
@@ -663,10 +654,8 @@ if (messageForm) {
                         }
                     );
 
-
                 const result =
                     await response.json();
-
 
                 if (
                     !response.ok ||
@@ -683,28 +672,20 @@ if (messageForm) {
                     return;
                 }
 
-
                 formStatus.textContent =
                     "✅ Message posted successfully! 🇮🇳";
 
-
                 messageForm.reset();
 
-
-                // Reload messages
                 await loadMessages();
 
-
-                // Update stats
                 await loadStats();
-
 
                 setTimeout(() => {
 
                     formStatus.textContent = "";
 
                 }, 3000);
-
 
             } catch (error) {
 
@@ -743,20 +724,12 @@ function escapeHTML(text) {
 
 async function initializeApp() {
 
-    // First load existing DB stats
     await loadStats();
 
-
-    // Register current visitor
     await registerVisitor();
 
-
-    // Load messages
     await loadMessages();
 
-
-    // Load stats again
-    // so visitor count is updated
     await loadStats();
 }
 
